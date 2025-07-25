@@ -1,0 +1,53 @@
+{
+  "name": "AI-config-manager",
+  "version": "1.0.0",
+  "description": "AI Configuration Manager - A CLI tool to manage AI configurations",
+  "main": "dist/lib/index.js",
+  "bin": {
+    "acm": "dist/bin/acm.js"
+  },
+  "scripts": {
+    "start": "node dist/bin/acm.js",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ai",
+    "claude",
+    "api",
+    "configuration",
+    "switch",
+    "cli",
+    "anthropic",
+    "openai"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "preferGlobal": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/acm-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/acm-cli/issues"
+  },
+  "homepage": "https://github.com/your-username/acm-cli#readme",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^9.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "typescript": "^4.9.0"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ]
+}

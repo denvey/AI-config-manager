@@ -1,0 +1,95 @@
+{
+  "common": {
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info"
+  },
+  "config": {
+    "created": "Created default config file: {0}",
+    "editHint": "Please edit this file and fill in your real API keys",
+    "aliasExists": "Config alias '{0}' already exists",
+    "notFound": "Config '{0}' not found",
+    "currentCleared": "Current config cleared"
+  },
+  "commands": {
+    "list": {
+      "title": "Available configs:",
+      "headers": {
+        "alias": "Alias",
+        "name": "Name",
+        "token": "API Key (first 15 chars)",
+        "url": "API URL"
+      }
+    },
+    "use": {
+      "missingAlias": "Please specify config alias",
+      "listHint": "Use 'acm list' to see available configs",
+      "notFound": "Config '{0}' not found",
+      "switched": "Switched to: {0}",
+      "apiUrl": "API URL: {0}",
+      "token": "Token: {0}...",
+      "envSet": "Environment variables set, use in current terminal session.",
+      "shellHint": "To auto-apply this config in new terminals, add these commands to your shell config file:"
+    },
+    "add": {
+      "missingParams": "Missing parameters",
+      "usage": "Usage: acm add <alias> <name> <token> <url>",
+      "added": "Added config: {0} ({1})"
+    },
+    "remove": {
+      "missingAlias": "Please specify config alias to remove",
+      "removed": "Removed config: {0} ({1})"
+    },
+    "current": {
+      "none": "No config is currently set",
+      "hint": "Use 'acm use <alias>' to set config",
+      "title": "Current config:",
+      "alias": "Alias: {0}",
+      "name": "Name: {0}",
+      "url": "API URL: {0}",
+      "token": "Token: {0}...",
+      "active": "Status: Active ✓",
+      "inactive": "Status: Inactive (run 'acm use {0}' to activate)"
+    },
+    "help": {
+      "title": "ACM (AI Configuration Manager) - nvm/nrm-like AI API config switcher",
+      "usage": "Usage:",
+      "usageText": "acm <command> [arguments]",
+      "commands": "Commands:",
+      "commandList": {
+        "use": "use <alias>              Switch to specified config",
+        "list": "list                     Show all available configs",
+        "add": "add <alias> <name> <token> <url>  Add new config",
+        "remove": "remove <alias>           Remove specified config",
+        "current": "current                  Show current config",
+        "lang": "lang <zh|en>             Switch language",
+        "help": "help                     Show this help message"
+      },
+      "examples": "Examples:",
+      "exampleList": {
+        "use": "acm use kimi            # Switch to kimi config",
+        "list": "acm list                # List all configs",
+        "add": "acm add openai OpenAI sk-xxx https://api.openai.com",
+        "remove": "acm remove openai       # Remove openai config",
+        "current": "acm current             # Show current config",
+        "lang": "acm lang en             # Switch to English"
+      },
+      "configFiles": "Config files:",
+      "configFileList": {
+        "config": "~/.claude_config        # Config storage file",
+        "current": "~/.claude_current       # Current config record file",
+        "lang": "~/.acm_lang             # Language setting file"
+      }
+    },
+    "lang": {
+      "current": "Current language: {0}",
+      "switched": "Switched to {0} language",
+      "usage": "Usage: acm lang <zh|en>",
+      "languageNames": {
+        "zh": "中文",
+        "en": "English"
+      }
+    }
+  }
+}
