@@ -41,7 +41,12 @@ export class I18n {
                     editHint: '请编辑此文件，填入您的真实 API 密钥',
                     aliasExists: '配置别名 \'{0}\' 已存在',
                     notFound: '配置 \'{0}\' 不存在',
-                    currentCleared: '当前配置已清除'
+                    currentCleared: '当前配置已清除',
+                    shellConfigUpdated: '已更新 shell 配置文件: {0}',
+                    windowsEnvVarSet: '已设置 Windows 系统环境变量（重启终端后生效）',
+                    currentSessionActive: '✓ 当前会话已生效，可直接使用',
+                    unixSourceHint: '💡 提示：在其他终端运行 `source {0}` 立即生效',
+                    immediateEffectCommands: '🚀 在当前终端立即生效，请运行以下命令：'
                 },
                 commands: {
                     list: {
@@ -136,7 +141,12 @@ export class I18n {
                     editHint: 'Please edit this file and fill in your real API keys',
                     aliasExists: 'Config alias \'{0}\' already exists',
                     notFound: 'Config \'{0}\' not found',
-                    currentCleared: 'Current config cleared'
+                    currentCleared: 'Current config cleared',
+                    shellConfigUpdated: 'Updated shell config file: {0}',
+                    windowsEnvVarSet: 'Windows system environment variables set (restart terminal to take effect)',
+                    currentSessionActive: '✓ Current session is active, ready to use',
+                    unixSourceHint: '💡 Tip: Run `source {0}` in other terminals for immediate effect',
+                    immediateEffectCommands: '🚀 For immediate effect in current terminal, run these commands:'
                 },
                 commands: {
                     list: {

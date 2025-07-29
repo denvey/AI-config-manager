@@ -1,6 +1,6 @@
 {
-  "name": "AI-config-manager",
-  "version": "1.0.0",
+  "name": "ai-config-manager",
+  "version": "0.0.2",
   "description": "AI Configuration Manager - A CLI tool to manage AI configurations",
   "main": "dist/lib/index.js",
   "bin": {
@@ -23,7 +23,7 @@
     "anthropic",
     "openai"
   ],
-  "author": "Your Name",
+  "author": "denvey",
   "license": "MIT",
   "engines": {
     "node": ">=14.0.0"

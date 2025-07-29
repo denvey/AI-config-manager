@@ -19,7 +19,7 @@
 #### 方式1: NPM 全局安装 (推荐)
 
 ```bash
-npm install -g acm-cli
+npm install -g ai-config-manager
 ```
 
 #### 方式2: 手动安装
@@ -127,7 +127,7 @@ acm lang zh
 
 ### NPM 安装的版本
 ```bash
-npm uninstall -g acm-cli
+npm uninstall -g ai-config-manager
 ```
 
 ### 手动安装的版本
@@ -202,7 +202,7 @@ npm link
 acm help
 
 # 取消链接
-npm unlink -g acm-cli
+npm unlink -g ai-config-manager
 ```
 
 ### 项目结构

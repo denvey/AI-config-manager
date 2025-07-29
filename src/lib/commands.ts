@@ -57,11 +57,6 @@ export class Commands {
             console.log(chalk.green(i18n.t('commands.use.switched', config.name)));
             console.log(chalk.gray(i18n.t('commands.use.apiUrl', config.url)));
             console.log(chalk.gray(i18n.t('commands.use.token', config.token.substring(0, 15))));
-            console.log();
-            console.log(chalk.yellow(i18n.t('commands.use.envSet')));
-            console.log(chalk.yellow(i18n.t('commands.use.shellHint')));
-            console.log(chalk.gray(`export ANTHROPIC_AUTH_TOKEN="${config.token}"`));
-            console.log(chalk.gray(`export ANTHROPIC_BASE_URL="${config.url}"`));
         } catch (error) {
             console.error(chalk.red(i18n.t('common.error') + ':'), (error as Error).message);
             process.exit(1);
