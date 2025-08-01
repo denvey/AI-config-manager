@@ -26,10 +26,10 @@ program
     });
 
 program
-    .command('add <alias> <name> <token> <url>')
+    .command('add <alias> <token> <url> [type]')
     .description('添加新配置')
-    .action((alias: string, name: string, token: string, url: string) => {
-        commands.add(alias, name, token, url);
+    .action((alias: string, token: string, url: string, type?: "KEY" | "TOKEN") => {
+        commands.add(alias, token, url, type);
     });
 
 program

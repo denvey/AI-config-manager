@@ -12,6 +12,16 @@
 - 🌍 多语言支持 (中文/English)
 - 🎯 自动语言检测
 
+## Claude 中转推荐
+- aicodemirror [注册链接](https://aicodewith.com/?invitation=WSC1JER) `邀请码 WSC1JER`
+
+- aicodewith [注册链接](https://aicodewith.com/?invitation=WSC1JER) `邀请码 WSC1JER`
+
+- yourapi [注册链接](https://yourapi.cn/register?aff=zQOY) `邀请码 zQOY`
+
+- gaccode [注册链接](https://gaccode.com/signup?ref=5AUFSX1W) `邀请码 5AUFSX1W`
+
+
 ## 快速开始
 
 ### 安装方式
@@ -23,10 +33,10 @@ npm install -g ai-config-manager
 ```
 
 #### 方式2: 手动安装
-
+> 维护可能不及时
 ```bash
 git clone <repository-url>
-cd acm
+cd ai-config-manager
 ./install.sh
 ```
 
@@ -34,13 +44,18 @@ cd acm
 
 ```bash
 # 查看所有可用配置
-acm list
+acm list 
+或 acm ls
 
 # 切换到指定配置
-acm use kimi
+acm use Alias
+eg.
+acm use openai
 
 # 添加新配置
-acm add openai OpenAI sk-xxx https://api.openai.com
+acm add [Alias] [type] [key] [api url] [OpenAI]
+eg.
+acm add openai sk-xxx https://api.openai.com
 
 # 删除配置
 acm remove openai

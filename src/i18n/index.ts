@@ -19,7 +19,7 @@ export class I18n {
     constructor() {
         this.configFile = path.join(os.homedir(), '.acm_lang');
         this.loadMessages();
-        this.loadLanguageConfig();
+        // this.loadLanguageConfig();
     }
 
     private loadMessages(): void {
@@ -45,7 +45,7 @@ export class I18n {
                     shellConfigUpdated: '已更新 shell 配置文件: {0}',
                     windowsEnvVarSet: '已设置 Windows 系统环境变量（重启终端后生效）',
                     currentSessionActive: '✓ 当前会话已生效，可直接使用',
-                    unixSourceHint: '💡 提示：在其他终端运行 `source {0}` 立即生效',
+                    unixSourceHint: '💡 提示：新开窗口立即生效。由于限制在当前窗口生效需运行 `source {0}` 后才能立即生效',
                     immediateEffectCommands: '🚀 在当前终端立即生效，请运行以下命令：'
                 },
                 commands: {
@@ -53,7 +53,7 @@ export class I18n {
                         title: '可用配置:',
                         headers: {
                             alias: '别名',
-                            name: '名称',
+                            name: '类型',
                             token: 'API密钥(前15位)',
                             url: 'API地址'
                         }
@@ -82,7 +82,7 @@ export class I18n {
                         hint: '使用 \'acm use <alias>\' 设置配置',
                         title: '当前配置:',
                         alias: '别名: {0}',
-                        name: '名称: {0}',
+                        name: '类型: {0}',
                         url: 'API地址: {0}',
                         token: '密钥: {0}...',
                         active: '状态: 已激活 ✓',
@@ -96,7 +96,7 @@ export class I18n {
                         commandList: {
                             use: 'use <alias>              切换到指定的配置',
                             list: 'list                     显示所有可用配置',
-                            add: 'add <alias> <name> <token> <url>  添加新配置',
+                            add: 'add <alias> <token> <url> [key_type] 添加新配置',
                             remove: 'remove <alias>           删除指定配置',
                             current: 'current                  显示当前使用的配置',
                             lang: 'lang <zh|en>             切换语言',
@@ -145,7 +145,7 @@ export class I18n {
                     shellConfigUpdated: 'Updated shell config file: {0}',
                     windowsEnvVarSet: 'Windows system environment variables set (restart terminal to take effect)',
                     currentSessionActive: '✓ Current session is active, ready to use',
-                    unixSourceHint: '💡 Tip: Run `source {0}` in other terminals for immediate effect',
+                    unixSourceHint: '💡 Tip: Changes will take effect immediately in a new terminal window. Due to limitations, to apply changes in the current window you need to run `source {0}`.',
                     immediateEffectCommands: '🚀 For immediate effect in current terminal, run these commands:'
                 },
                 commands: {
@@ -170,7 +170,7 @@ export class I18n {
                     },
                     add: {
                         missingParams: 'Missing parameters',
-                        usage: 'Usage: acm add <alias> <name> <token> <url>',
+                        usage: 'Usage: acm add <alias> <token> <url> [key_type]',
                         added: 'Added config: {0} ({1})'
                     },
                     remove: {
@@ -196,7 +196,7 @@ export class I18n {
                         commandList: {
                             use: 'use <alias>              Switch to specified config',
                             list: 'list                     Show all available configs',
-                            add: 'add <alias> <name> <token> <url>  Add new config',
+                            add: 'add <alias> <token> <url> [key_type] Add new config',
                             remove: 'remove <alias>           Remove specified config',
                             current: 'current                  Show current config',
                             lang: 'lang <zh|en>             Switch language',

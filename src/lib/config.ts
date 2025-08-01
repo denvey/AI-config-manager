@@ -208,6 +208,7 @@ ${envVarEnd}`;
         const newEnvVars = `${envVarStart}
 export ANTHROPIC_BASE_URL="${config.url}"
 export ANTHROPIC_AUTH_TOKEN="${config.token}"
+export ANTHROPIC_API_KEY="${config.token}"
 ${envVarEnd}`;
 
         if (startIndex !== -1 && endIndex !== -1) {
@@ -229,6 +230,7 @@ ${envVarEnd}`;
     private setCurrentSessionEnvironmentVariables(config: Config): void {
         // 为当前 Node.js 进程设置环境变量（立即生效，acm 命令本身和子进程都能使用）
         process.env.ANTHROPIC_AUTH_TOKEN = config.token;
+        process.env.ANTHROPIC_API_KEY = config.token;
         process.env.ANTHROPIC_BASE_URL = config.url;
         
         // 注意：Node.js 进程无法直接影响父 shell 的环境变量
@@ -250,9 +252,6 @@ ${envVarEnd}`;
     }
 
     private createConvenientWrapper(config: Config): void {
-        // 创建一个便捷的激活脚本，用户可以通过 eval 命令执行
-        const tempFile = path.join(os.tmpdir(), `acm_activate_${Date.now()}.sh`);
-        
         try {
             let content = '';
             if (this.isWindows()) {
@@ -262,33 +261,13 @@ set ANTHROPIC_BASE_URL=${config.url}
 set ANTHROPIC_AUTH_TOKEN=${config.token}
 echo Environment variables set for current session
 `;
-                fs.writeFileSync(tempFile.replace('.sh', '.bat'), content, 'utf8');
-                console.log(`💡 运行以下命令在当前会话中立即生效：`);
-                console.log(`call "${tempFile.replace('.sh', '.bat')}"`);
             } else {
                 // Unix shell 脚本
                 content = `export ANTHROPIC_BASE_URL="${config.url}"
 export ANTHROPIC_AUTH_TOKEN="${config.token}"
 echo "✅ 环境变量已在当前会话中设置"
 `;
-                fs.writeFileSync(tempFile, content, 'utf8');
-                console.log(`💡 运行以下命令在当前会话中立即生效：`);
-                console.log(`source "${tempFile}"`);
-                console.log(`或者直接运行：`);
-                console.log(`eval "$(cat "${tempFile}")"`);
             }
-            
-            // 5秒后自动清理临时文件
-            setTimeout(() => {
-                try {
-                    if (fs.existsSync(tempFile)) fs.unlinkSync(tempFile);
-                    const batFile = tempFile.replace('.sh', '.bat');
-                    if (fs.existsSync(batFile)) fs.unlinkSync(batFile);
-                } catch (e) {
-                    // 忽略清理错误
-                }
-            }, 5000);
-            
         } catch (error) {
             // 如果创建临时文件失败，回退到显示命令
             console.log(`💡 在当前终端运行以下命令立即生效：`);

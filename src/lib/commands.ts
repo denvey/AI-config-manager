@@ -14,7 +14,7 @@ export class Commands {
             const configs = this.configManager.getAllConfigs();
             
             console.log(chalk.cyan(i18n.t('commands.list.title')));
-            const headers = i18n.t('commands.list.headers.alias').padEnd(10) + 
+            const headers = i18n.t('commands.list.headers.alias').padEnd(15) + 
                            i18n.t('commands.list.headers.name').padEnd(15) + 
                            i18n.t('commands.list.headers.token').padEnd(20) + 
                            i18n.t('commands.list.headers.url');
@@ -54,7 +54,7 @@ export class Commands {
 
             this.configManager.setCurrentConfig(config);
             
-            console.log(chalk.green(i18n.t('commands.use.switched', config.name)));
+            console.log(chalk.green(i18n.t('commands.use.switched', config.alias)));
             console.log(chalk.gray(i18n.t('commands.use.apiUrl', config.url)));
             console.log(chalk.gray(i18n.t('commands.use.token', config.token.substring(0, 15))));
         } catch (error) {
@@ -63,13 +63,23 @@ export class Commands {
         }
     }
 
-    public add(alias: string, name: string, token: string, url: string): void {
-        if (!alias || !name || !token || !url) {
+    public add(alias: string, token: string, url: string, type?: 'KEY'| 'TOKEN'): void {
+        if (!alias || !token || !url) {
             console.error(chalk.red(i18n.t('common.error') + ': ' + i18n.t('commands.add.missingParams')));
             console.log(i18n.t('commands.add.usage'));
             process.exit(1);
         }
-
+        let name = 'Claude';
+        const typeList = [
+            'https://code.wenwen-ai.com',
+            'https://api.aicodemirror.com/api/claudecode',
+            'https://gaccode.com/claudecode',
+            'https://api.aicodewith.com'
+        ];
+        if (typeList.includes(url)) {
+            name = 'Claude';
+        }
+        
         try {
             this.configManager.addConfig(alias, name, token, url);
             console.log(chalk.green(i18n.t('commands.add.added', name, alias)));
