@@ -14,7 +14,7 @@ export class Commands {
             const configs = this.configManager.getAllConfigs();
             
             console.log(chalk.cyan(i18n.t('commands.list.title')));
-            const headers = i18n.t('commands.list.headers.alias').padEnd(15) + 
+            const headers = i18n.t('commands.list.headers.alias').padEnd(20) + 
                            i18n.t('commands.list.headers.name').padEnd(15) + 
                            i18n.t('commands.list.headers.token').padEnd(20) + 
                            i18n.t('commands.list.headers.url');
@@ -24,7 +24,7 @@ export class Commands {
             configs.forEach(config => {
                 const tokenPreview = config.token.substring(0, 15) + '...';
                 console.log(
-                    config.alias.padEnd(10) + 
+                    config.alias.padEnd(20) + 
                     config.name.padEnd(15) + 
                     tokenPreview.padEnd(20) + 
                     config.url
@@ -63,30 +63,57 @@ export class Commands {
         }
     }
 
-    public add(alias: string, token: string, url: string, type?: 'KEY'| 'TOKEN'): void {
+    public add(alias: string, token: string, url: string, type?: string): void {
         if (!alias || !token || !url) {
             console.error(chalk.red(i18n.t('common.error') + ': ' + i18n.t('commands.add.missingParams')));
             console.log(i18n.t('commands.add.usage'));
             process.exit(1);
         }
+        
         let name = 'Claude';
-        const typeList = [
-            'https://code.wenwen-ai.com',
-            'https://api.aicodemirror.com/api/claudecode',
-            'https://gaccode.com/claudecode',
-            'https://api.aicodewith.com'
-        ];
-        if (typeList.includes(url)) {
-            name = 'Claude';
-        }
+        
+        // Determine key type based on manual specification or URL rules
+        let keyType = this.determineKeyType(url, type);
         
         try {
-            this.configManager.addConfig(alias, name, token, url);
+            this.configManager.addConfig(alias, name, token, url, keyType);
             console.log(chalk.green(i18n.t('commands.add.added', name, alias)));
         } catch (error) {
             console.error(chalk.red(i18n.t('common.error') + ':'), (error as Error).message);
             process.exit(1);
         }
+    }
+
+    private determineKeyType(url: string, manualType?: string): 'KEY' | 'TOKEN' {
+        // If manually specified, validate and use it
+        if (manualType) {
+            const normalizedType = manualType.toLowerCase();
+            if (['key', 'k'].includes(normalizedType)) {
+                return 'KEY';
+            } else if (['token', 't'].includes(normalizedType)) {
+                return 'TOKEN';
+            }
+        }
+        
+        // Built-in URL rules based on feature.md
+        const tokenUrls = [
+            'https://code.wenwen-ai.com',
+            'https://api.aicodewith.com'
+        ];
+        
+        const keyUrls = [
+            'https://api.aicodemirror.com/api/claudecode',
+            'https://gaccode.com/claudecode'
+        ];
+        
+        if (tokenUrls.includes(url)) {
+            return 'TOKEN';
+        } else if (keyUrls.includes(url)) {
+            return 'KEY';
+        }
+        
+        // Default to TOKEN for unknown URLs
+        return 'TOKEN';
     }
 
     public remove(alias: string): void {

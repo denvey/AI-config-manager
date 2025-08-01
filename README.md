@@ -13,7 +13,7 @@
 - 🎯 自动语言检测
 
 ## Claude 中转推荐
-- aicodemirror [注册链接](https://aicodewith.com/?invitation=WSC1JER) `邀请码 WSC1JER`
+- aicodemirror [注册链接](https://www.aicodemirror.com/register?invitecode=JUONAJ) `邀请码 JUONAJ`
 
 - aicodewith [注册链接](https://aicodewith.com/?invitation=WSC1JER) `邀请码 WSC1JER`
 
@@ -53,9 +53,9 @@ eg.
 acm use openai
 
 # 添加新配置
-acm add [Alias] [type] [key] [api url] [OpenAI]
+acm add [Alias] [key] [api url] [type]  [OpenAI]
 eg.
-acm add openai sk-xxx https://api.openai.com
+acm add openai sk-xxx https://api.openai.com key
 
 # 删除配置
 acm remove openai

@@ -32,8 +32,10 @@ kimi|月之暗面|sk-xxxxxxKIMIxxxxxx|https://api.moonshot.cn/anthropic`;
         return content.split('\n')
             .filter(line => line.trim())
             .map(line => {
-                const [alias, name, token, url] = line.split('|');
-                return { alias, name, token, url };
+                const parts = line.split('|');
+                const [alias, name, token, url] = parts;
+                const type = parts[4] as 'KEY' | 'TOKEN' || 'TOKEN'; // Default to TOKEN for backward compatibility
+                return { alias, name, token, url, type };
             });
     }
 
@@ -42,14 +44,14 @@ kimi|月之暗面|sk-xxxxxxKIMIxxxxxx|https://api.moonshot.cn/anthropic`;
         return configs.find(config => config.alias === alias);
     }
 
-    public addConfig(alias: string, name: string, token: string, url: string): void {
+    public addConfig(alias: string, name: string, token: string, url: string, keyType?: 'KEY' | 'TOKEN'): void {
         const configs = this.getAllConfigs();
         
         if (configs.find(config => config.alias === alias)) {
             throw new Error(i18n.t('config.aliasExists', alias));
         }
         
-        const newConfig = `${alias}|${name}|${token}|${url}`;
+        const newConfig = `${alias}|${name}|${token}|${url}|${keyType || 'TOKEN'}`;
         fs.appendFileSync(this.configFile, '\n' + newConfig, 'utf8');
     }
 
@@ -63,7 +65,7 @@ kimi|月之暗面|sk-xxxxxxKIMIxxxxxx|https://api.moonshot.cn/anthropic`;
         
         const remainingConfigs = configs.filter(config => config.alias !== alias);
         const content = remainingConfigs.map(config => 
-            `${config.alias}|${config.name}|${config.token}|${config.url}`
+            `${config.alias}|${config.name}|${config.token}|${config.url}|${config.type || 'TOKEN'}`
         ).join('\n');
         
         fs.writeFileSync(this.configFile, content, 'utf8');
@@ -172,9 +174,10 @@ kimi|月之暗面|sk-xxxxxxKIMIxxxxxx|https://api.moonshot.cn/anthropic`;
         const startIndex = content.indexOf(envVarStart);
         const endIndex = content.indexOf(envVarEnd);
         
+        const envVar = config.type === 'KEY' ? 'ANTHROPIC_API_KEY' : 'ANTHROPIC_AUTH_TOKEN';
         const newEnvVars = `${envVarStart}
 $env:ANTHROPIC_BASE_URL = "${config.url}"
-$env:ANTHROPIC_AUTH_TOKEN = "${config.token}"
+$env:${envVar} = "${config.token}"
 ${envVarEnd}`;
 
         if (startIndex !== -1 && endIndex !== -1) {
@@ -205,10 +208,10 @@ ${envVarEnd}`;
         const startIndex = content.indexOf(envVarStart);
         const endIndex = content.indexOf(envVarEnd);
         
+        const envVar = config.type === 'KEY' ? 'ANTHROPIC_API_KEY' : 'ANTHROPIC_AUTH_TOKEN';
         const newEnvVars = `${envVarStart}
 export ANTHROPIC_BASE_URL="${config.url}"
-export ANTHROPIC_AUTH_TOKEN="${config.token}"
-export ANTHROPIC_API_KEY="${config.token}"
+export ${envVar}="${config.token}"
 ${envVarEnd}`;
 
         if (startIndex !== -1 && endIndex !== -1) {
@@ -229,8 +232,14 @@ ${envVarEnd}`;
 
     private setCurrentSessionEnvironmentVariables(config: Config): void {
         // 为当前 Node.js 进程设置环境变量（立即生效，acm 命令本身和子进程都能使用）
-        process.env.ANTHROPIC_AUTH_TOKEN = config.token;
-        process.env.ANTHROPIC_API_KEY = config.token;
+        const envVar = config.type === 'KEY' ? 'ANTHROPIC_API_KEY' : 'ANTHROPIC_AUTH_TOKEN';
+        
+        // Clear both environment variables first
+        delete process.env.ANTHROPIC_AUTH_TOKEN;
+        delete process.env.ANTHROPIC_API_KEY;
+        
+        // Set the appropriate one
+        process.env[envVar] = config.token;
         process.env.ANTHROPIC_BASE_URL = config.url;
         
         // 注意：Node.js 进程无法直接影响父 shell 的环境变量
@@ -252,32 +261,15 @@ ${envVarEnd}`;
     }
 
     private createConvenientWrapper(config: Config): void {
-        try {
-            let content = '';
-            if (this.isWindows()) {
-                // Windows batch 脚本
-                content = `@echo off
-set ANTHROPIC_BASE_URL=${config.url}
-set ANTHROPIC_AUTH_TOKEN=${config.token}
-echo Environment variables set for current session
-`;
-            } else {
-                // Unix shell 脚本
-                content = `export ANTHROPIC_BASE_URL="${config.url}"
-export ANTHROPIC_AUTH_TOKEN="${config.token}"
-echo "✅ 环境变量已在当前会话中设置"
-`;
-            }
-        } catch (error) {
-            // 如果创建临时文件失败，回退到显示命令
-            console.log(`💡 在当前终端运行以下命令立即生效：`);
-            if (this.isWindows()) {
-                console.log(`set ANTHROPIC_BASE_URL=${config.url}`);
-                console.log(`set ANTHROPIC_AUTH_TOKEN=${config.token}`);
-            } else {
-                console.log(`export ANTHROPIC_BASE_URL="${config.url}"`);
-                console.log(`export ANTHROPIC_AUTH_TOKEN="${config.token}"`);
-            }
+        // 如果创建临时文件失败，回退到显示命令
+        const envVar = config.type === 'KEY' ? 'ANTHROPIC_API_KEY' : 'ANTHROPIC_AUTH_TOKEN';
+        console.log(`💡 在当前终端运行以下命令立即生效：`);
+        if (this.isWindows()) {
+            console.log(`set ANTHROPIC_BASE_URL=${config.url}`);
+            console.log(`set ${envVar}=${config.token}`);
+        } else {
+            console.log(`export ANTHROPIC_BASE_URL="${config.url}"`);
+            console.log(`export ${envVar}="${config.token}"`);
         }
     }
 
@@ -291,8 +283,9 @@ echo "✅ 环境变量已在当前会话中设置"
         if (this.isWindows()) {
             if (shellType === 'cmd' || !profileFile) {
                 // CMD 或无配置文件时，使用注册表设置系统环境变量
+                const envVar = config.type === 'KEY' ? 'ANTHROPIC_API_KEY' : 'ANTHROPIC_AUTH_TOKEN';
                 this.setWindowsEnvironmentVariable('ANTHROPIC_BASE_URL', config.url);
-                this.setWindowsEnvironmentVariable('ANTHROPIC_AUTH_TOKEN', config.token);
+                this.setWindowsEnvironmentVariable(envVar, config.token);
                 console.log(i18n.t('config.windowsEnvVarSet'));
             } else {
                 // PowerShell 配置文件
@@ -316,7 +309,7 @@ echo "✅ 环境变量已在当前会话中设置"
     }
 
     public setCurrentConfig(config: Config): void {
-        const configLine = `${config.alias}|${config.name}|${config.token}|${config.url}`;
+        const configLine = `${config.alias}|${config.name}|${config.token}|${config.url}|${config.type || 'TOKEN'}`;
         fs.writeFileSync(this.currentFile, configLine, 'utf8');
         
         // 更新 shell 配置文件和设置环境变量
@@ -329,11 +322,14 @@ echo "✅ 环境变量已在当前会话中设置"
         }
         
         const content = fs.readFileSync(this.currentFile, 'utf8');
-        const [alias, name, token, url] = content.split('|');
+        const parts = content.split('|');
+        const [alias, name, token, url] = parts;
+        const type = parts[4] as 'KEY' | 'TOKEN' || 'TOKEN';
         
-        const isActive = process.env.ANTHROPIC_AUTH_TOKEN === token && 
+        const envVar = type === 'KEY' ? 'ANTHROPIC_API_KEY' : 'ANTHROPIC_AUTH_TOKEN';
+        const isActive = process.env[envVar] === token && 
                         process.env.ANTHROPIC_BASE_URL === url;
         
-        return { alias, name, token, url, isActive };
+        return { alias, name, token, url, type, isActive };
     }
 }
