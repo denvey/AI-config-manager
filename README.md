@@ -53,7 +53,7 @@ eg.
 acm use openai
 
 # 添加新配置
-acm add [Alias] [key] [api url] [type]  [OpenAI]
+acm add [Alias] [key] [api url] [type]
 eg.
 acm add openai sk-xxx https://api.openai.com key
 
@@ -106,9 +106,9 @@ acm help
 
 默认包含以下配置（需要替换为真实的 API 密钥）：
 ```
-ww|问问Code|sk-xxxxxxWWWWWWxxxxxx|https://code.wenwen-ai.com
-any|AnyRouter|sk-xxxxxxANYxxxxxx|https://anyrouter.top
-kimi|月之暗面|sk-xxxxxxKIMIxxxxxx|https://api.moonshot.cn/anthropic
+aicodemirror|Claude|sk-ant-XXXX|https://api.aicodemirror.com/api/claudecode|KEY
+aicodewith|Claude|sk-XXXX|https://api.aicodewith.com|TOKEN
+kimi|月之暗面|sk-xxxxxxKIMIxxxxxx|https://api.moonshot.cn/anthropic|TOKEN
 ```
 
 ## 环境变量
@@ -175,7 +175,7 @@ acm use openai
 ## 工作原理
 
 1. **配置存储**: 所有配置存储在 `~/.claude_config` 文件中
-2. **当前配置跟踪**: 当前使用的配置记录在 `~/.claude_current` 文件中
+2. **当前配置跟踪**: 当前使用的配置记录在 `~/.claude_current` 文件中(待改进)
 3. **环境变量设置**: 使用 `acm use` 命令时自动导出相应的环境变量
 4. **配置验证**: 提供完整的错误处理和配置验证机制
 

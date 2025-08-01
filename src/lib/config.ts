@@ -16,9 +16,7 @@ export class ConfigManager {
 
     public initConfig(): void {
         if (!fs.existsSync(this.configFile)) {
-            const defaultConfig = `ww|问问Code|sk-xxxxxxWWWWWWxxxxxx|https://code.wenwen-ai.com
-any|AnyRouter|sk-xxxxxxANYxxxxxx|https://anyrouter.top
-kimi|月之暗面|sk-xxxxxxKIMIxxxxxx|https://api.moonshot.cn/anthropic`;
+            const defaultConfig = '';
             
             fs.writeFileSync(this.configFile, defaultConfig, 'utf8');
             console.log(i18n.t('config.created', this.configFile));
@@ -305,7 +303,7 @@ ${envVarEnd}`;
         }
         
         // 创建便捷的激活方式
-        this.createConvenientWrapper(config);
+        // this.createConvenientWrapper(config);
     }
 
     public setCurrentConfig(config: Config): void {
