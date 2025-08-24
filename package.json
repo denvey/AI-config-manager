@@ -1,6 +1,6 @@
 {
   "name": "ai-config-manager",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "AI Configuration Manager - A CLI tool to manage AI configurations",
   "main": "dist/lib/index.js",
   "bin": {
