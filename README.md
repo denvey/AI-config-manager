@@ -13,6 +13,8 @@
 - 🎯 自动语言检测
 
 ## Claude 中转推荐
+- sssaicode [注册链接](https://sssaicode.com/register?ref=XHFPRH) `邀请码 XHFPRH`
+
 - aicodemirror [注册链接](https://www.aicodemirror.com/register?invitecode=JUONAJ) `邀请码 JUONAJ`
 
 - aicodewith [注册链接](https://aicodewith.com/?invitation=WSC1JER) `邀请码 WSC1JER`
@@ -54,62 +56,33 @@ acm use openai
 
 # 添加新配置
 acm add [Alias] [key] [api url] [type]
+type: 
+key = ANTHROPIC_AUTH_TOKEN
+token = ANTHROPIC_BASE_URL
 eg.
-acm add openai sk-xxx https://api.openai.com key
+acm add Claudecode sk-xxx https://api.claudecode.com key
 
 # 删除配置
-acm remove openai
+acm remove Claudecode
 
 # 查看当前配置
 acm current
 
 # 切换语言
 acm lang en
-
-# 查看帮助
-acm help
-```
-
-## 命令详解
-
-### acm list
-显示所有可用的 API 配置，包括别名、名称、API 密钥预览和 URL。
-
-### acm use <alias>
-切换到指定的配置，自动设置环境变量 `ANTHROPIC_AUTH_TOKEN` 和 `ANTHROPIC_BASE_URL`。
-
-### acm add <alias> <name> <token> <url>
-添加新的 API 配置。参数说明：
-- `alias`: 配置别名（用于快速切换）
-- `name`: 配置显示名称
-- `token`: API 密钥
-- `url`: API 基础 URL
-
-### acm remove <alias>
-删除指定的配置。
-
-### acm current
-显示当前使用的配置详情和激活状态。
-
-### acm lang [language]
 切换界面语言或显示当前语言。
 - 无参数：显示当前语言
 - `zh`：切换到中文
 - `en`：切换到英文
 
+# 查看帮助
+acm help
+```
+
+
 ## 配置文件
 
-配置文件位于 `~/.claude_config`，格式为：
-```
-别名|名称|API密钥|API地址
-```
-
-默认包含以下配置（需要替换为真实的 API 密钥）：
-```
-aicodemirror|Claude|sk-ant-XXXX|https://api.aicodemirror.com/api/claudecode|KEY
-aicodewith|Claude|sk-XXXX|https://api.aicodewith.com|TOKEN
-kimi|月之暗面|sk-xxxxxxKIMIxxxxxx|https://api.moonshot.cn/anthropic|TOKEN
-```
+配置文件位于 `~/.claude_config`
 
 ## 环境变量
 
@@ -148,28 +121,6 @@ npm uninstall -g ai-config-manager
 ### 手动安装的版本
 ```bash
 ./uninstall.sh
-```
-
-## 示例使用场景
-
-```bash
-# 初次安装后，查看可用配置
-acm list
-
-# 编辑配置文件，填入真实 API 密钥
-vim ~/.claude_config
-
-# 切换到 kimi 配置
-acm use kimi
-
-# 验证当前配置
-acm current
-
-# 添加新的 OpenAI 配置
-acm add openai "OpenAI API" sk-proj-xxx https://api.openai.com
-
-# 切换到新添加的配置
-acm use openai
 ```
 
 ## 工作原理
